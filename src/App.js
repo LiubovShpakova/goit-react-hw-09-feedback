@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Section from "./components/Section/Section";
 import FeedbackOptions from "./components/Feedback/feedback";
@@ -23,6 +23,23 @@ export default function App() {
         return;
     }
   };
+  useEffect(() => {
+    try {
+      const { good, neutral, bad } = JSON.parse(
+        localStorage.getItem("statistic")
+      );
+      setGood(good);
+      setNeutral(neutral);
+      setBad(bad);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  useEffect(() => {
+    const obj = { good, neutral, bad };
+    localStorage.setItem("statistic", JSON.stringify(obj));
+  }, [good, neutral, bad]);
+
   const total = good + neutral + bad;
   const countTotalFeedback = () => {
     return total;
